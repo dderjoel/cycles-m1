@@ -51,8 +51,8 @@ double findmax_fastfloat(std::vector<std::string> &s) {
 }
 
 template <class T>
-std::pair<performance_counters, performance_counters>
-time_it_ns(std::vector<std::string> &lines, T const &function, size_t repeat) {
+std::uint64_t time_it_ns(std::vector<std::string> &lines, T const &function,
+                         size_t repeat) {
   performance_counters agg_min{1e300};
   performance_counters agg_avg{0.0};
   // warm up the cache:
@@ -62,20 +62,16 @@ time_it_ns(std::vector<std::string> &lines, T const &function, size_t repeat) {
       printf("bug\n");
     }
   }
-  for (size_t i = 0; i < repeat; i++) {
-    performance_counters start = get_counters();
-    double ts = function(lines);
-    if (ts == 0) {
-      printf("bug\n");
-    }
-    performance_counters end = get_counters();
-    performance_counters diff = end - start;
-    agg_min = agg_min.min(diff);
-    agg_avg += diff;
+
+  performance_counters start = get_counters();
+  double ts = function(lines);
+  if (ts == 0) {
+    printf("bug\n");
   }
-  agg_avg /= lines.size() * repeat;
-  agg_min /= lines.size();
-  return std::make_pair(agg_min, agg_avg);
+  performance_counters end = get_counters();
+
+  uint64_t diff = end.cycles - start.cycles;
+  return diff;
 }
 
 void pretty_print(
@@ -111,15 +107,16 @@ void process(std::vector<std::string> &lines, size_t volume) {
   size_t repeat = 100;
   double volumeMB = volume / (1024. * 1024.);
   std::cout << "volume = " << volumeMB << " MB " << std::endl;
-  pretty_print(volume, lines.size(), "strtod",
-               time_it_ns(lines, findmax_strtod, repeat));
-  printf("\n");
-  pretty_print(volume, lines.size(), "fastfloat",
-               time_it_ns(lines, findmax_fastfloat, repeat));
+
+  uint64_t diff = time_it_ns(lines, findmax_strtod, repeat);
+
+  printf("diff in cycles  %ld \n", diff);
   printf("\n");
 }
 
-void parse_random_numbers() {
+int main() {
+  setup_performance_counters();
+
   std::cout << "# parsing random numbers" << std::endl;
   std::vector<std::string> lines;
   size_t howmany{10000};
@@ -135,10 +132,6 @@ void parse_random_numbers() {
     lines.push_back(line);
   }
   process(lines, volume);
-}
 
-int main() {
-  setup_performance_counters();
-  parse_random_numbers();
   return EXIT_SUCCESS;
 }
