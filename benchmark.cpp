@@ -40,9 +40,9 @@ std::uint64_t sum(std::uint64_t s) {
 int main() {
   setup_performance_counters();
 
-  uint64_t s = (10000000);
+  uint64_t s = 10000;
   // warm up the cache:
-  for (size_t i = 0; i < 10; i++) {
+  for (size_t i = 0; i < 100; i++) {
     double ts = sum(s);
     if (ts == 0) {
       printf("bug\n");
@@ -56,10 +56,7 @@ int main() {
   }
   uint64_t end = get_cycles();
 
-  uint64_t diff = end - start;
-
-  printf("diff in cycles  %ld \n", diff);
-  printf("\n");
+  printf("diff in cycles  %ld \n", end - start);
 
   return EXIT_SUCCESS;
 }
