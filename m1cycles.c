@@ -136,11 +136,11 @@ void setup_performance_counters(void) {
 }
 
 uint64_t get_cycles() {
-  static bool warned = false;
+  static int warned = 0;
   if (kpc_get_thread_counters(0, COUNTERS_COUNT, g_counters)) {
     if (!warned) {
       printf("kpc_get_thread_counters failed, run as sudo?\n");
-      warned = true;
+      warned = 1;
     }
     return -1;
   }
