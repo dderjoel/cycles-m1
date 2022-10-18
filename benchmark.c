@@ -1,5 +1,6 @@
 
 #include "m1cycles.h"
+#include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -11,7 +12,6 @@ uint64_t sum(uint64_t s) {
     if (sum % 1023 == 0) {
       // just to make it more unpredictable
       // otherwise, the cycle count is like 89 or something
-      printf("whoo");
       sum /= 24;
     }
   }
@@ -37,7 +37,9 @@ int main() {
   }
   uint64_t end = get_cycles();
 
-  printf("diff in cycles  %lu \n", end - start);
+  int64_t diff = start - end;
+
+  printf("diff in cycles  %" PRId64 " \n", diff);
 
   return 0;
 }
