@@ -30,7 +30,7 @@ std::uint64_t sum(std::uint64_t s) {
     if (sum % 1023 == 0) {
       // just to make it more unpredictable
       // otherwise, the cycle count is like 89 or something
-      printf("whoo\n");
+      printf("whoo");
       sum /= 24;
     }
   }

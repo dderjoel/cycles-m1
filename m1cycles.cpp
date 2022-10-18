@@ -135,20 +135,6 @@ void setup_performance_counters(void) {
   configure_rdtsc();
 }
 
-extern performance_counters get_counters(void) {
-  static bool warned = false;
-  if (kpc_get_thread_counters(0, COUNTERS_COUNT, g_counters)) {
-    if (!warned) {
-      printf("kpc_get_thread_counters failed, run as sudo?\n");
-      warned = true;
-    }
-    return 1;
-  }
-  // g_counters[3 + 2] gives you the number of instructions 'decoded'
-  // whereas g_counters[1] might give you the number of instructions 'retired'.
-  return performance_counters{g_counters[0 + 2], g_counters[3 + 2],
-                              g_counters[4 + 2], g_counters[5 + 2]};
-}
 uint64_t get_cycles() {
   static bool warned = false;
   if (kpc_get_thread_counters(0, COUNTERS_COUNT, g_counters)) {
@@ -156,7 +142,7 @@ uint64_t get_cycles() {
       printf("kpc_get_thread_counters failed, run as sudo?\n");
       warned = true;
     }
-    return 1;
+    return -1;
   }
 
   return g_counters[0 + 2];
