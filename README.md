@@ -1,3 +1,7 @@
+# Credit
+[Lemire Blogpost on Counting cycles](https://lemire.me/blog/2021/03/24/counting-cycles-and-instructions-on-the-apple-m1-processor/)
+Original code [here](https://github.com/lemire/Code-used-on-Daniel-Lemire-s-blog/tree/master/2021/03/24)
+
 # Usage:
 ```
 make
