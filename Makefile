@@ -1,5 +1,10 @@
-fastestrng: m1cycles.cpp benchmark.cpp
-	clang++ -std=c++17 -O2 -fno-tree-vectorize -o benchmark m1cycles.cpp benchmark.cpp -Wall -Wextra
-	sudo ./benchmark
+all: run
+
+benchmark: m1cycles.cpp benchmark.cpp
+	clang++ -std=c++17 -O2  -o ${@} ${^} -Wall -Wextra
+
 clean:
-	rm -r -f benchmark
+	rm -rf benchmark
+
+run: benchmark
+	sudo ./benchmark
