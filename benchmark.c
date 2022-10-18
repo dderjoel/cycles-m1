@@ -37,7 +37,7 @@ int main() {
   }
   uint64_t end = get_cycles();
 
-  int64_t diff = start - end;
+  int64_t diff = end - start;
 
   printf("diff in cycles  %" PRId64 " \n", diff);
 

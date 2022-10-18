@@ -29,7 +29,7 @@ int main() {
 
   uint64_t end = get_cycles();
 
-  printf("diff in cycles  %lu \n", end - start);
+  printf("Diff in cycles  %" PRId64 " \n", end - start);
 
   return 0;
 }
