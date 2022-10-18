@@ -1,29 +1,11 @@
 
 #include "m1cycles.h"
-#include <algorithm>
-#include <charconv>
-#include <chrono>
-#include <climits>
-#include <cmath>
-#include <cstdint>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctype.h>
-#include <fstream>
-#include <iomanip>
-#include <iostream>
-#include <locale.h>
-#include <random>
-#include <sstream>
 #include <stdio.h>
-#include <vector>
+#include <stdlib.h>
 
-#include "random_generators.h"
+uint64_t sum(uint64_t s) {
 
-std::uint64_t sum(std::uint64_t s) {
-
-  std::uint64_t sum = 0;
+  uint64_t sum = 0;
   for (uint64_t i = 0; i < s; i++) {
     sum += i;
     if (sum % 1023 == 0) {
