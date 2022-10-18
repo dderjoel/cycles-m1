@@ -27,12 +27,20 @@ std::uint64_t sum(std::uint64_t s) {
   std::uint64_t sum = 0;
   for (uint64_t i = 0; i < s; i++) {
     sum += i;
+    if (sum % 1023 == 0) {
+      // just to make it more unpredictable
+      // otherwise, the cycle count is like 89 or something
+      printf("whoo\n");
+      sum /= 24;
+    }
   }
   return sum;
 }
 
-void process(uint64_t s) {
+int main() {
+  setup_performance_counters();
 
+  uint64_t s = (10000000);
   // warm up the cache:
   for (size_t i = 0; i < 10; i++) {
     double ts = sum(s);
@@ -41,23 +49,17 @@ void process(uint64_t s) {
     }
   }
 
-  performance_counters start = get_counters();
+  uint64_t start = get_cycles();
   double ts = sum(s);
   if (ts == 0) {
     printf("bug\n");
   }
-  performance_counters end = get_counters();
+  uint64_t end = get_cycles();
 
-  uint64_t diff = end.cycles - start.cycles;
+  uint64_t diff = end - start;
 
   printf("diff in cycles  %ld \n", diff);
   printf("\n");
-}
-
-int main() {
-  setup_performance_counters();
-
-  process(10000000);
 
   return EXIT_SUCCESS;
 }

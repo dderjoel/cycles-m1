@@ -149,3 +149,15 @@ extern performance_counters get_counters(void) {
   return performance_counters{g_counters[0 + 2], g_counters[3 + 2],
                               g_counters[4 + 2], g_counters[5 + 2]};
 }
+uint64_t get_cycles() {
+  static bool warned = false;
+  if (kpc_get_thread_counters(0, COUNTERS_COUNT, g_counters)) {
+    if (!warned) {
+      printf("kpc_get_thread_counters failed, run as sudo?\n");
+      warned = true;
+    }
+    return 1;
+  }
+
+  return g_counters[0 + 2];
+}
