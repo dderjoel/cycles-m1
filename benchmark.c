@@ -23,7 +23,7 @@ int main() {
 
   uint64_t s = 10000;
   // warm up the cache:
-  for (size_t i = 0; i < 100; i++) {
+  for (size_t i = 0; i < s; i++) {
     double ts = sum(s);
     if (ts == 0) {
       printf("bug\n");
@@ -37,7 +37,7 @@ int main() {
   }
   uint64_t end = get_cycles();
 
-  printf("diff in cycles  %ld \n", end - start);
+  printf("diff in cycles  %lu \n", end - start);
 
-  return EXIT_SUCCESS;
+  return 0;
 }
